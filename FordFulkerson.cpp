@@ -240,8 +240,6 @@ int main(){
     Gr5->printMatrix();
     cout<<"Maximum Flow: "<<Gr5->fordFulkerson(0,4);
     cout<<endl;
-
-    cout<<"ciao"<<endl;
     
     return 0;
 }
