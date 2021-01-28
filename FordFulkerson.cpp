@@ -1,6 +1,5 @@
 #include <iostream>
 #include <climits>
-#include <string.h> 
 #include <queue>
 #define White 0
 #define Black 2
@@ -17,7 +16,7 @@ template<class H> class MGraph{
 
         int findIndex(H x){                                 //dato in input un valore torna l'indice a cui è situato nel vettore delle etichette
             for(int i=0;i<nodeNumber;i++){
-                if(*Key[i]  == x) return i;
+                if(*Key[i]  == x) return i;                 //scorre fino a quando non trova la chiave, altrimenti torna -1
             }
             return -1;
         }
@@ -30,7 +29,7 @@ template<class H> class MGraph{
             for(int i=0; i<maxLen;i++) Key[i] = NULL;       //imposta tutte le etichette a null 
             AdjM = new int*[maxLen];                        //inizializza la matrice di adiacenza tutta a 0
             for(int i=0; i<maxLen;i++){
-                AdjM[i] = new int[maxLen];
+                AdjM[i] = new int[maxLen];                  
                 for(int j=0;j<maxLen;j++){
                     AdjM[i][j] = 0;
                 }
@@ -38,27 +37,27 @@ template<class H> class MGraph{
         }
 
 
-        int getMaxNodeNumber(){
+        int getMaxNodeNumber(){                              //ritorna la dimensione massima del grafo
 		    return maxLen;
 	    }
 
 
-        int getCurrentNodeNumber(){
+        int getCurrentNodeNumber(){                          //ritorna il numero di nodi presenti attualmente all'interno del grafo
 		    return nodeNumber;
 	    }
 
 
-	    int getCurrentEdgeNumber(){
+	    int getCurrentEdgeNumber(){                          //ritorna il numero di archi presenti  attualmente all'interno del grafo
 		    return edgeNumber;
 	    }
 
 
-        int** getGraphMatrix(){
+        int** getGraphMatrix(){                              //ritorna la matrice di adiacenza
 		    return AdjM;
 	    }
 
 
-        H* getKey(int index){
+        H* getKey(int index){                                //ritorna in valore di una chiave dato l'indice
             if(index < 0 || index >= nodeNumber)    
                 return NULL;
             return Key[index];
@@ -137,7 +136,7 @@ template<class H> class MGraph{
                 } 
                 max_flow += path_flow;                                  //aggiunge il flusso del percorso al flusso massimo 
             } 
-            return max_flow; 
+            return max_flow;                                            //ritorna un intero che rappresenta il flusso massimo ottenibile tra il pozzo e la sorgente
         } 
 
 
@@ -176,69 +175,71 @@ template<class H> class MGraph{
 
 int main(){
     //TEST 1
-    cout<<endl<<"GRAPH 1"<<endl<<endl;
-    MGraph<char> *Gr = new MGraph<char>(6);
-	Gr->addNode('0')->addNode('1')->addNode('2')->addNode('3');
+    cout<<endl<<"GRAPH 1"<<endl<<endl;                                                          //primo grafo di test
+    MGraph<char> *Gr = new MGraph<char>(6);                                                     //alloca un nuovo grafo con dimensione massima 6
+	Gr->addNode('0')->addNode('1')->addNode('2')->addNode('3');                                 //aggiunge tutti i nodi specificandone il nome
 	Gr->addNode('4')->addNode('5');
-	Gr->addEdge('0','1',16)->addEdge('0','2',13);
+	Gr->addEdge('0','1',16)->addEdge('0','2',13);                                               //aggiunge tutti gli archi con relativi pesi
 	Gr->addEdge('1','2',10)->addEdge('1','3',12);
 	Gr->addEdge('2','1',4)->addEdge('2','4',14);
 	Gr->addEdge('3','5',20)->addEdge('3','2',9);
 	Gr->addEdge('4','3',7)->addEdge('4','5',4);
-    Gr->print();
+    Gr->print();                                                                                //stampa tutti i nodi e i rispettivi nodi adiacenti
     cout<<endl;
-    Gr->printMatrix();
-    cout<<"Maximum Flow: "<<Gr->fordFulkerson(0,5);
+    Gr->printMatrix();                                                                          //stampa la matrice di adiacenza
+    cout<<"Maximum Flow: "<<Gr->fordFulkerson(0,5);                                             //invoca la procedura di fordFulkerson passando sorgente e pozzo
     cout<<endl;
 
     //TEST 2
-    cout<<endl<<"GRAPH 2"<<endl<<endl;
-    MGraph<char> *Gr2 = new MGraph<char>(6);
-    Gr2->addNode('0')->addNode('1')->addNode('2')->addNode('3')->addNode('4')->addNode('5');
-    Gr2->addEdge('0','1',7)->addEdge('0','3',10)->addEdge('0','2',8);
+    cout<<endl<<"GRAPH 2"<<endl<<endl;                                                          //secondo grafo di test
+    MGraph<char> *Gr2 = new MGraph<char>(6);                                                    //alloca un nuovo grafo con dimensione massima 6
+    Gr2->addNode('0')->addNode('1')->addNode('2')->addNode('3')->addNode('4')->addNode('5');    //aggiunge tutti i nodi specificandone il nome
+    Gr2->addEdge('0','1',7)->addEdge('0','3',10)->addEdge('0','2',8);                           //aggiunte tutti gli archi con relativi pesi            
     Gr2->addEdge('1','5',21)->addEdge('1','4',1);
     Gr2->addEdge('2','4',12);
-	Gr2->addEdge('3','2',2)->addEdge('3','4',5)->addEdge('3','1',11);
+	Gr2->addEdge('3','2',2)->addEdge('3','4',5)->addEdge('3','1',11);                           
 	Gr2->addEdge('4','5',14);
-    Gr2->print();
+    Gr2->print();                                                                               //stampa tutti i nodi e i rispettivi nodi adiacenti
     cout<<endl;
-    Gr2->printMatrix();
-    cout<<"Maximum Flow: "<<Gr2->fordFulkerson(0,5);
+    Gr2->printMatrix();                                                                         //stampa la matrice di adiacenza
+    cout<<"Maximum Flow: "<<Gr2->fordFulkerson(0,5);                                            //invoca la procedura di fordFulkerson passando sorgente e pozzo
     cout<<endl;
 
     //TEST 3
-    cout<<endl<<"GRAPH 3"<<endl<<endl;
-    MGraph<char> *Gr3 = new MGraph<char>(5);
-    Gr2->addNode('0')->addNode('1')->addNode('2')->addNode('3')->addNode('4');
-    Gr2->addEdge('0','1',100)->addEdge('0','2',100);
-    Gr2->addEdge('1','3',7);
+    cout<<endl<<"GRAPH 3"<<endl<<endl;                                                          //terzo grafo di test
+    MGraph<char> *Gr3 = new MGraph<char>(5);                                                    //alloca un nuovo grafo con dimensione massima 5
+    Gr2->addNode('0')->addNode('1')->addNode('2')->addNode('3')->addNode('4');                  //aggiunge tutti i nodi specificandone il nome
+    Gr2->addEdge('0','1',100)->addEdge('0','2',100);                                            //aggiunge tutti gli archi con relativi pesi
+    Gr2->addEdge('1','3',7);    
     Gr2->addEdge('2','3',3);
 	Gr2->addEdge('3','4',1)->addEdge('3','4',5)->addEdge('3','1',11);
 	Gr2->addEdge('4','5',14);
-    Gr2->print();
-    cout<<endl;
-    Gr2->printMatrix();
-    cout<<"Maximum Flow: "<<Gr2->fordFulkerson(0,4);
+    Gr2->print();                                                                               //stampa tutti i nodi e i rispettivi nodi adiacenti
+    cout<<endl;                     
+    Gr2->printMatrix();                                                                         //stampa la matrice di adiacenza
+    cout<<"Maximum Flow: "<<Gr2->fordFulkerson(0,4);                                            //invoca la procedura di fordFulkerson passando sorgente e pozzo
     cout<<endl;
 
-    //TEST 4
-    cout<<endl<<"GRAPH 4"<<endl<<endl;
-    MGraph<char> *Gr4 = new MGraph<char>(4);
-    Gr4->addNode('0')->addNode('1')->addNode('2')->addNode('3');
-    Gr4->addEdge('0','1',3)->addEdge('0','2',2);
+    //TEST 4    
+    cout<<endl<<"GRAPH 4"<<endl<<endl;                                                          //quarto grafo di test
+    MGraph<char> *Gr4 = new MGraph<char>(4);                                                    //alloca un nuovo grafo con dimensione massima di 4
+    Gr4->addNode('0')->addNode('1')->addNode('2')->addNode('3');                                //aggiunge tutti i nodi specificandone il nome
+    Gr4->addEdge('0','1',3)->addEdge('0','2',2);                                                //aggiunge tutti gli archi con relativi pesi
     Gr4->addEdge('1','3',2)->addEdge('1','2',5);
     Gr4->addEdge('2','3',3);
-    Gr4->print();
+    Gr4->print();                                                                               //stampa tutti i nodi e i rispettivi nodi adiacenti
     cout<<endl;
-    Gr4->printMatrix();
-    cout<<"Maximum Flow: "<<Gr4->fordFulkerson(0,3);
+    Gr4->printMatrix();                                                                         //stampa la matrice di adiacenza
+    cout<<"Maximum Flow: "<<Gr4->fordFulkerson(0,3);                                            //invoca la procedura di fordFulkerson passando sorgente e pozzo
     cout<<endl;
 
-    //TEST 5 (caso limite)
-    cout<<endl<<"GRAPH 5"<<endl<<endl;
-    MGraph<char> *Gr5 = new MGraph<char>(5);
-    Gr5->printMatrix();
-    cout<<"Maximum Flow: "<<Gr5->fordFulkerson(0,4);
+    //TEST 5 (caso limite)                                                                      
+    cout<<endl<<"GRAPH 5"<<endl<<endl;                                                          //quinto grafo di test (caso limite: grafo sprovvisto di nodi)
+    MGraph<char> *Gr5 = new MGraph<char>(5);                                                    //alloco un grafo con dimensione massima di 5
+    Gr5->print();                                                                               //stampo tutti i nodi e i rispettivi nodi adiacenti
+    cout<<endl;
+    Gr5->printMatrix();                                                                         //stampo la matrice di adiacenza
+    cout<<"Maximum Flow: "<<Gr5->fordFulkerson(0,4);                                            //invoca la procedura di fordFulkerson passando sorgente e pozzo    
     cout<<endl;
     
     return 0;
