@@ -3,7 +3,7 @@
 #include <queue>
 #define White 0
 #define Black 2
-
+#define GRAY 1
 using namespace std;
 
 template<class H> class MGraph{
